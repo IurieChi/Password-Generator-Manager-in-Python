@@ -66,7 +66,10 @@ class MainWindow:
 
 
     def getHistory(self):
-        pass
+        self.textBox.config(state='normal')
+        self.textBox.delete(1.0, 'end')
+        self.textBox.insert(1.0, open('password.txt','r').read())
+        self.textBox.config(state='disabled')
 
 if __name__ == "__main__":
-    MainWindow()
+    MainWindow()    
