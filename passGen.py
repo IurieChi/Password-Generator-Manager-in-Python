@@ -64,8 +64,6 @@ class MainWindow:
         self.textBox.config(state='normal')
         self.textBox.delete(1.0,'end')
         self.textBox.insert(1.0, f'{"".join(randomGen)}\n')
-        print(len(self.textBox.get(1.0, 'end')))
-        print(self.textBox.get(1.0, 'end'))
         self.textBox.config(state='disabled')
         with open('password.txt','a') as file: 
             file.write(f'{"".join(randomGen)}\n') #add password to file
@@ -84,14 +82,21 @@ class MainWindow:
 
         self.textBox.config(state='normal')
         if self.textBox.get(1.0,'end')=='\n':
-           messagebox.showinfo('message', msgno)
-        else:
+           messagebox.showwarning('Warning',msgno)
+        elif len(self.textBox.get(1.0,'end'))>=1 and len(self.textBox.get(1.0,'end'))<=12:
            #to copy password need to: pip install pyperclip then import pyperclip 
             clipboard.copy(self.textBox.get(1.0,'end'))
+            messagebox.showinfo('message', msg)
             self.textBox.delete(1.0,'end')
-            messagebox.showinfo('Warrnig', msg)
+        else:
+            with open('password.txt','r') as text:
+                for line in text: # read all file and copy just last password from for iteration 
+                    pass
+                clipboard.copy(line)
+                messagebox.showinfo('message', msg)
+                self.textBox.delete(1.0,'end')
         self.textBox.config(state='disabled')
-
+            
     
 if __name__ == "__main__":
     MainWindow()    
