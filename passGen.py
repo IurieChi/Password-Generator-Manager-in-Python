@@ -1,6 +1,8 @@
 #password generator
 import string, random
 import tkinter as tk
+from tkinter import messagebox
+import pyperclip as clipboard
 
 class MainWindow:
     #use constructor
@@ -19,7 +21,7 @@ class MainWindow:
         self.oprionsFrame = tk.LabelFrame(self.frame, text='Options') #create frame with test on top 
         self.upperCase = tk.Checkbutton(self.oprionsFrame, text='Upper case leter', onvalue=1, offvalue=0, variable=self.val)
         self.specialChar = tk.Checkbutton(self.oprionsFrame, text='Special character',onvalue=1, offvalue=0, variable=self.special)
-        self.number = tk.Checkbutton(self.oprionsFrame, text='Numer',onvalue=1, offvalue=0, variable=self.num)
+        self.number = tk.Checkbutton(self.oprionsFrame, text='Number',onvalue=1, offvalue=0, variable=self.num)
 
         # Length Options
         self.lenght = tk.IntVar()
@@ -30,8 +32,9 @@ class MainWindow:
         self.radioButton2 = tk.Radiobutton(self.lengthFrame, text='10', value=10, variable=self.lenght)
         self.radioButton3 = tk.Radiobutton(self.lengthFrame, text='12', value=12, variable=self.lenght)
         # Buttons && Textbox
-        self.genPas = tk.Button(self.main, text='Generate Password', width=25, command=self.generatePassword)
-        self.vievHis = tk.Button(self.main, width= 25, text='View History', command=self.getHistory)
+        self.genPas = tk.Button(self.main, text='Generate Password', width=25 ,foreground='green', command=self.generatePassword,)
+        self.vievHis = tk.Button(self.main, width= 25, text='View History', foreground='red', command=self.getHistory)
+        self.copyPass =tk.Button(self.main,width= 25, text='Copy password',command=self.copyPassword)
         self.textBox = tk.Text(self.main, width=25, height= 8, relief='solid')
         # Packing && Grid of Widgets
         self.widgetsInFrame =   [self.upperCase, self.specialChar, self.number]
@@ -42,7 +45,7 @@ class MainWindow:
             item.pack(pady=5, anchor='w')
         self.oprionsFrame.grid(row=0, column=0) # Options and Length beside each other
         self.lengthFrame.grid(row=0, column=1) 
-        self.mainWidgets = [ self.frame, self.genPas, self.vievHis, self.textBox ]
+        self.mainWidgets = [ self.frame, self.genPas,self.copyPass,self.vievHis, self.textBox]
         for widget in self.mainWidgets: 
             widget.pack(pady=5)
 
@@ -51,7 +54,7 @@ class MainWindow:
             randomUpper = random.choices(string.ascii_uppercase, k=5)
         else:randomUpper = []
         if self.special.get() ==1:
-            randomSpecial = random.choices("-_@!?.", k=2)
+            randomSpecial = random.choices("-_@!?$#%^&*.", k=2)
         else:randomSpecial=[]
         if self.num.get()==1:
             randomNum = random.choices(string.digits, k=5)
@@ -61,8 +64,11 @@ class MainWindow:
         self.textBox.config(state='normal')
         self.textBox.delete(1.0,'end')
         self.textBox.insert(1.0, f'{"".join(randomGen)}\n')
+        print(len(self.textBox.get(1.0, 'end')))
+        print(self.textBox.get(1.0, 'end'))
         self.textBox.config(state='disabled')
-        with open('password.txt','a') as file: file.write(f"{''.join(randomGen)}\n")
+        with open('password.txt','a') as file: 
+            file.write(f'{"".join(randomGen)}\n') #add password to file
 
 
     def getHistory(self):
@@ -70,6 +76,22 @@ class MainWindow:
         self.textBox.delete(1.0, 'end')
         self.textBox.insert(1.0, open('password.txt','r').read())
         self.textBox.config(state='disabled')
+    
+    def copyPassword(self):
+        #message 
+        msg = 'Password copied succesfuly'
+        msgno = 'First generate password'
 
+        self.textBox.config(state='normal')
+        if self.textBox.get(1.0,'end')=='\n':
+           messagebox.showinfo('message', msgno)
+        else:
+           #to copy password need to: pip install pyperclip then import pyperclip 
+            clipboard.copy(self.textBox.get(1.0,'end'))
+            self.textBox.delete(1.0,'end')
+            messagebox.showinfo('Warrnig', msg)
+        self.textBox.config(state='disabled')
+
+    
 if __name__ == "__main__":
     MainWindow()    
