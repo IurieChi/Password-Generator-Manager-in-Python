@@ -3,6 +3,9 @@ import string, random
 import tkinter as tk
 from tkinter import messagebox
 import pyperclip as clipboard
+from cryptography.fernet import Fernet
+
+key = b'4b6LWAOo3Y1mgjTIjOMSAdz2LPaKFNvCfdKv1Vzg-Lc='
 
 class MainWindow:
     #use constructor
@@ -13,20 +16,24 @@ class MainWindow:
         self.main.title("Password Generator")
         self.widgets()
         self.main.mainloop()
+        # self.encryptPass()
+        
 
     def widgets(self):
         self.frame = tk.Frame(self.main) #create a frame 
 
         self.val, self.special, self.num = tk.IntVar(),tk.IntVar(),tk.IntVar() #wariables
-        self.oprionsFrame = tk.LabelFrame(self.frame, text='Options') #create frame with test on top 
+
+         #create frame with test on top
+        self.oprionsFrame = tk.LabelFrame(self.frame, text='Options') 
         self.upperCase = tk.Checkbutton(self.oprionsFrame, text='Upper case leter', onvalue=1, offvalue=0, variable=self.val)
         self.specialChar = tk.Checkbutton(self.oprionsFrame, text='Special character',onvalue=1, offvalue=0, variable=self.special)
         self.number = tk.Checkbutton(self.oprionsFrame, text='Number',onvalue=1, offvalue=0, variable=self.num)
 
         # Length Options
+        self.lengthFrame = tk.LabelFrame(self.frame, text='Password Lenght')
         self.lenght = tk.IntVar()
         self.lenght.set('8') #set default value
-        self.lengthFrame = tk.LabelFrame(self.frame, text='Password Lenght')
         # Radio Buttons
         self.radioButton1 = tk.Radiobutton(self.lengthFrame, text='8', value=8, variable=self.lenght)
         self.radioButton2 = tk.Radiobutton(self.lengthFrame, text='10', value=10, variable=self.lenght)
@@ -49,30 +56,49 @@ class MainWindow:
         for widget in self.mainWidgets: 
             widget.pack(pady=5)
 
+    # to be able to encript and decript file need pip install cryptography and import Fernet
+        # from cryptography.fernet import Fernet
+        #generate a key and save it on file 
+        # key = Fernet.generate_key()
+        # with open('mykey.txt','wb') as file: 
+        #     file.write(key)
+    # def encryptPass(self): 
+        
+
     def generatePassword(self):
         if self.val.get() == 1:
             randomUpper = random.choices(string.ascii_uppercase, k=5)
         else:randomUpper = []
-        if self.special.get() ==1:
+        if self.special.get() == 1:
             randomSpecial = random.choices("-_@!?$#%^&*.", k=2)
         else:randomSpecial=[]
-        if self.num.get()==1:
+        if self.num.get()== 1:
             randomNum = random.choices(string.digits, k=5)
         else:randomNum =[]
-        randomGen = random.sample(randomUpper + randomSpecial + randomNum + random.choices(string.ascii_lowercase, k=12), k= int(self.lenght.get()))
+
+        randomGen = random.sample(randomUpper + randomSpecial + randomNum + random.choices(string.ascii_lowercase, k=12), k = int(self.lenght.get()))
         #populate textbox
+        genetated_password = "".join(randomGen)
         self.textBox.config(state='normal')
         self.textBox.delete(1.0,'end')
-        self.textBox.insert(1.0, f'{"".join(randomGen)}\n')
+        self.textBox.insert(1.0, genetated_password)
         self.textBox.config(state='disabled')
+        #encrypt generated password and save it on file
+        f = Fernet(key)
+        encrypted = f.encrypt(genetated_password.encode())
+        print(type(key))
         with open('password.txt','a') as file: 
-            file.write(f'{"".join(randomGen)}\n') #add password to file
+            file.write(str(encrypted)+'\n') #add password to file
 
 
     def getHistory(self):
         self.textBox.config(state='normal')
         self.textBox.delete(1.0, 'end')
-        self.textBox.insert(1.0, open('password.txt','r').read())
+        f= Fernet(key)
+        with open('password.txt','rb')as r:
+            readEncrypted = bytes(r.read())
+        decrypt = f.decrypt(readEncrypted).decode()
+        self.textBox.insert(1.0, decrypt)
         self.textBox.config(state='disabled')
     
     def copyPassword(self):
@@ -96,7 +122,9 @@ class MainWindow:
                 messagebox.showinfo('message', msg)
                 self.textBox.delete(1.0,'end')
         self.textBox.config(state='disabled')
-            
+
+
+
     
 if __name__ == "__main__":
     MainWindow()    
