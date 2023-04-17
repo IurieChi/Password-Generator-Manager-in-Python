@@ -59,13 +59,7 @@ class MainWindow:
 
     # to be able to encript and decript file need pip install cryptography and import Fernet
         # from cryptography.fernet import Fernet
-        #generate a key and save it on file 
-        # key = Fernet.generate_key()
-        # with open('mykey.txt','wb') as file: 
-        #     file.write(key)
-    # def encryptPass(self): 
-        
-
+   
     def generatePassword(self):
         if self.val.get() == 1:
             randomUpper = random.choices(string.ascii_uppercase, k=5)
@@ -112,7 +106,7 @@ class MainWindow:
         if self.textBox.get(1.0,'end')=='\n':
            messagebox.showwarning('Warning',msg_generate)
 
-        elif len(self.textBox.get(1.0,'end'))>=1 and len(self.textBox.get(1.0,'end'))<=12:
+        elif len(self.textBox.get(1.0,'end'))>=1 and len(self.textBox.get(1.0,'end'))<=13:
            #to copy password need to: pip install pyperclip then import pyperclip 
             clipboard.copy(self.textBox.get(1.0,'end'))
             messagebox.showinfo('message', msg)
@@ -120,9 +114,9 @@ class MainWindow:
         else:
             with open('password.txt','r') as text:
                 for line in text:# read all file and copy just last password from for iteration 
-                    if line == '\n':
-                        readEncrypted = token.decrypt(line.encode()) 
-                        clipboard.copy(readEncrypted)
+                    pass
+                    readEncrypted = token.decrypt(line.encode()) 
+                clipboard.copy(readEncrypted.decode('utf-8'))   
                 messagebox.showinfo('message', msg)
                 self.textBox.delete(1.0,'end')
         self.textBox.config(state='disabled')
