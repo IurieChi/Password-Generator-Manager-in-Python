@@ -25,7 +25,7 @@ class MainWindow:
 
         self.val, self.special, self.num = tk.IntVar(),tk.IntVar(),tk.IntVar() #wariables
 
-         #create frame with test on top
+         #create frame with text on top
         self.oprionsFrame = tk.LabelFrame(self.frame, text='Options') 
         self.upperCase = tk.Checkbutton(self.oprionsFrame, text='Upper case leter', onvalue=1, offvalue=0, variable=self.val)
         self.specialChar = tk.Checkbutton(self.oprionsFrame, text='Special character',onvalue=1, offvalue=0, variable=self.special)
