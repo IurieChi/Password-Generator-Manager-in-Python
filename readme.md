@@ -1,7 +1,7 @@
 # Password-Generator-Manager-in-Python
 Simple Password Generator &amp; Manager with GUI in Python
 
-Password Genertor and Manager with GUI in Python.
+Password Generator and Manager with GUI in Python.
 
 Functions of the tool includes:
 
