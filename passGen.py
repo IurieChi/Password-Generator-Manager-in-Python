@@ -42,9 +42,9 @@ class MainWindow:
         self.radioButton2 = tk.Radiobutton(self.lengthFrame, text='10', value=10, variable=self.lenght)
         self.radioButton3 = tk.Radiobutton(self.lengthFrame, text='12', value=12, variable=self.lenght)
         # Buttons && Textbox
-        self.genPas = tk.Button(self.main, text='Generate Password', width=25 ,foreground='green', command=self.l.generatePassword)
-        self.vievHis = tk.Button(self.main, width= 25, text='View History', foreground='red', command=self.l.getHistory)
-        self.copyPass =tk.Button(self.main,width= 25, text='Copy password',command=self.l.copyPassword)
+        self.genPas = tk.Button(self.main, text='Generate Password', width=25 ,foreground='green'), #command=self.l.generatePassword)
+        self.vievHis = tk.Button(self.main, width= 25, text='View History', foreground='red')#, command=self.l.getHistory)
+        self.copyPass =tk.Button(self.main,width= 25, text='Copy password')#,command=self.l.copyPassword)
         self.textBox = tk.Text(self.main, width=25, height= 8, relief='solid')
         # Packing && Grid of Widgets
         self.widgetsInFrame =   [self.upperCase, self.specialChar, self.number]
@@ -60,11 +60,6 @@ class MainWindow:
             widget.pack(pady=5)
 
  
-   
-   
-
-
-
     
 if __name__ == "__main__":
     MainWindow()    
