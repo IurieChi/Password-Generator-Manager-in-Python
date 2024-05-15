@@ -1,4 +1,4 @@
-import passGen 
+# import passGen 
 import string, random
 from tkinter import messagebox
 import pyperclip as clipboard

@@ -1,16 +1,11 @@
 #password generator
 
-# to be able to encript and decript file need pip install cryptography and import Fernet
-# from cryptography.fernet import Fernet
-
 import tkinter as tk
-from cryptography.fernet import Fernet
-
 import logic as l
 
 
-
 class MainWindow:
+    """ This is main class that create a gui for applicattion """
     #use constructor
     def __init__(self) -> None:
         self.main = tk.Tk()
@@ -47,19 +42,17 @@ class MainWindow:
         self.copyPass =tk.Button(self.main,width= 25, text='Copy password')#,command=self.l.copyPassword)
         self.textBox = tk.Text(self.main, width=25, height= 8, relief='solid')
         # Packing && Grid of Widgets
-        self.widgetsInFrame =   [self.upperCase, self.specialChar, self.number]
+        self.widgetsInFrame=[self.upperCase, self.specialChar, self.number]
         for item in self.widgetsInFrame:
-            item.pack(pady =5 ,anchor ='w')
-        self.radioButtons = [self.radioButton1,self.radioButton2,self.radioButton3]
+            item.pack(pady =5, anchor ='w')
+        self.radioButtons=[self.radioButton1,self.radioButton2,self.radioButton3]
         for item in self.radioButtons:
             item.pack(pady=5, anchor='w')
         self.oprionsFrame.grid(row=0, column=0) # Options and Length beside each other
         self.lengthFrame.grid(row=0, column=1) 
-        self.mainWidgets = [ self.frame, self.genPas,self.copyPass,self.vievHis, self.textBox]
+        self.mainWidgets = [ self.frame, self.genPas, self.copyPass, self.vievHis, self.textBox]
         for widget in self.mainWidgets: 
             widget.pack(pady=5)
-
- 
-    
+  
 if __name__ == "__main__":
     MainWindow()    
