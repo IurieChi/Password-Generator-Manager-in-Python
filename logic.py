@@ -1,5 +1,6 @@
 # import passGen 
-import string, random
+import string
+import random
 from tkinter import messagebox
 import pyperclip as clipboard
 from cryptography.fernet import Fernet
